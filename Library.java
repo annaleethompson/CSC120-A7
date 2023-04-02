@@ -1,9 +1,10 @@
 /** 
  * Filename: Library.java
- * Decription: Library class extentded from Building with a hashtable attribute containing all the titles in the library's collection. Contains functions addTitle, removeTitle, checkOut, returnBook, containsTitle, isAvailable, and printCollection.
- * A part of CSC 120-02: Object-Oriented Programming, Smith College Spring 2023, A6: Use What Your Parent (Class) Gave You
+ * Decription: Library class extended from Building with a hashtable attribute containing all the titles in the library's collection. Contains functions addTitle, removeTitle, checkOut, returnBook, containsTitle, isAvailable, and printCollection.
+ * Overridden Methods: toString(), showOptions(), and goToFloor()
+ * A part of CSC 120-02: Object-Oriented Programming, Smith College Spring 2023, A7: Not Your Parents Methods
  * @author Anna-Lee Thompson (@annaleethompson)
- * Date: March 19, 2023
+ * Date: April 2, 2023
  */
 
 /**Imports Hashtable from the java.util package */
@@ -12,13 +13,15 @@ import java.util.Hashtable;
 /* This is a stub for the Library class */
 public class Library extends Building {
 
-  /**Stored Hashtable containing Title/Author and Availability for each book in the library's collection */
+  /**Stored Hashtable containing Title/Author and availability for each book in the library's collection, as well as a boolean for if the libbrary has a elevator */
   private Hashtable<String, Boolean> collection;
+  Boolean elevator;
 
   /**Constructor */
-  public Library(String name, String address, int nFloors) {
+  public Library(String name, String address, int nFloors, Boolean elevator) {
     super(name, address, nFloors);
     this.collection = new Hashtable<>();
+    this.elevator = elevator;
     System.out.println("You have built a library: 📖");
   }
   
@@ -138,12 +141,47 @@ public class Library extends Building {
    /*Library Extention of the Building toString() method */
   public String toString() {
     String description = super.toString();
-    description+="There is currently " + this.collection.size() + " titles in this libary.";
+    description+=" There is currently " + this.collection.size() + " titles in this libary.";
     return description;
   }
 
+  /* Overridden building method. Calls building method and adds the Library class functions. */
+  public void showOptions() {
+    super.showOptions();
+    System.out.println(" + addTitle(title) \n + removeTitle(title) \n + checkOut(title)\n + returnBook(title)\n + containsTitle(title)\n + isAvailable(title)\n + printcollection()");
+  }
+
+  /**Overriden building method. If the house has an elevator then it calls the buildings original goToFloor method. If the house doesn't have an elevator, you can only move up or down one floor at a time. 
+   * @param floorNum the floor that you want to travel to
+   */
+  public void goToFloor(int floorNum) {
+    if (this.elevator == true) {
+      System.out.println("...Ridng Elevator...");
+      super.goToFloor(floorNum);
+    }
+    if (this.elevator == false) {
+      if (this.activeFloor == -1) {
+        throw new RuntimeException("You are not inside this Building. Must call enter() before navigating between floors.");
+      }
+      else if (floorNum < 1 || floorNum > this.nFloors) {
+        throw new RuntimeException("Invalid floor number. Valid range for this Building is 1-" + this.nFloors +".");
+      }
+      else if (Math.abs(floorNum - this.activeFloor) !=1){
+        throw new RuntimeException("Sorry, you can only move one floor at a time!");
+      }
+      else if ((floorNum - this.activeFloor) ==1) {
+        this.activeFloor +=1;
+        System.out.println("You are now on floor #" + floorNum + " of " + this.name);
+      }
+      else if ((floorNum-this.activeFloor) ==-1) {
+        this.activeFloor -=1;
+        System.out.println("You are now on floor #" + floorNum + " of " + this.name);
+      }
+    }
+  }
+
   public static void main(String[] args) {
-    Library myLibrary = new Library("Neilson", "Smith College", 4);
+    Library myLibrary = new Library("Neilson", "Smith College", 4, true);
     myLibrary.addTitle("The Hobbit");
     System.out.println(myLibrary.toString());
     //myLibrary.addTitle("The Hobbit");
@@ -157,5 +195,13 @@ public class Library extends Building {
     //myLibrary.addTitle("Lord of the Rings");
     //myLibrary.addTitle("The Silmarillion");
     //myLibrary.printCollection();
+    Library Tejegg  = new Library("Tejegg", "1 Bacon Way", 7, false);
+    Tejegg.addTitle("Twilight"); 
+    Tejegg.addTitle("The Hunger Games"); 
+    System.out.println(Tejegg.toString());
+    Tejegg.printCollection();
+    Tejegg.showOptions();
+    Tejegg.enter();
+    Tejegg.goToFloor(2);
   }
 }

@@ -1,9 +1,11 @@
 /** 
  * Filename: Cafe.java
  * Decription: Cafe class extentded from Building with attributes nCoffeeOunces, nSugarPackets, nCreams, and nCups. Contains functions sellCoffee, and restock.
- * A part of CSC 120-02: Object-Oriented Programming, Smith College Spring 2023, A6: Use What Your Parent (Class) Gave You
+ * Overridden Methods: toString(), showOptions(), and goToFloor()
+ * Overloaded Methods: Constructor (no nFloors)
+ * A part of CSC 120-02: Object-Oriented Programming, Smith College Spring 2023, A7: Not Your Parents Methods
  * @author Anna-Lee Thompson (@annaleethompson)
- * Date: March 19, 2023
+ * Date: April 2, 2023
  */
 
 /* This is a stub for the Cafe class */
@@ -16,8 +18,8 @@ public class Cafe extends Building {
     private int nCups;
 
     /**Constructor */
-    public Cafe(String name, String address, int nFloors, int nCoffeeOunces, int nSugarPackets, int nCreams, int nCups) {
-        super(name, address, nFloors);
+    public Cafe(String name, String address, int nCoffeeOunces, int nSugarPackets, int nCreams, int nCups) {
+        super(name, address);
         this.nCoffeeOunces = nCoffeeOunces;
         this.nSugarPackets = nSugarPackets;
         this.nCreams = nCreams;
@@ -60,17 +62,30 @@ public class Cafe extends Building {
         String description = super.toString();
         description+="This cafe has a current stock of " + this.nCoffeeOunces +" coffee ounces, " + this.nSugarPackets + " sugar packets, " + this.nCreams +" creams, and " + this.nCups + " cups.";
         return description;
-      }
+    }
+
+    /* Overridden building method. Calls building method and adds the Cafe class functions. */
+    public void showOptions() {
+        super.showOptions();
+        System.out.println(" + sellCoffee(size, nSugarPackets, nCreams)\n + restock(nCoffeeOunces, nSugarPackets, nCreams, nCups)");
+    }
+
+    /**Overriden building method. If the house has an elevator then it calls the buildings original goToFloor method. If the house doesn't have an elevator, you can only move up or down one floor at a time. 
+   * @param floorNum the floor that you want to travel to
+   */
+    public void goToFloor(int floorNum) {
+        throw new RuntimeException("Cafe's only have one floor!");
+    }
     
     public static void main(String[] args) {
-        Cafe myCafe = new Cafe("Compass", "Neilson", 1, 50, 30, 20, 1);
+        Cafe myCafe = new Cafe("Compass", "Neilson", 50, 30, 20, 1);
         myCafe.sellCoffee(10, 5, 3);
         System.out.println(myCafe.toString());
         System.out.println(myCafe.nCoffeeOunces);
         System.out.println(myCafe.nSugarPackets);
         System.out.println(myCafe.nCreams);
         System.out.println(myCafe.nCups);
-        
-    }
-    
+        myCafe.showOptions();
+        myCafe.goToFloor(3);   
+    }   
 }
