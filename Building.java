@@ -11,7 +11,7 @@ public class Building {
     }
 
     /* Overloaded constructor with address only */
-    public Building(String address) {
+    public Building(String address, int nFloors) {
         this(); // Call default constructor
         this.address = address; // Override address
     }

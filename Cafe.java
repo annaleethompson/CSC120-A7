@@ -2,10 +2,10 @@
  * Filename: Cafe.java
  * Decription: Cafe class extentded from Building with attributes nCoffeeOunces, nSugarPackets, nCreams, and nCups. Contains functions sellCoffee, and restock.
  * Overridden Methods: toString(), showOptions(), and goToFloor()
- * Overloaded Methods: Constructor (no nFloors)
+ * Overloaded Methods: Constructor (no nFloors), and restock()
  * A part of CSC 120-02: Object-Oriented Programming, Smith College Spring 2023, A7: Not Your Parents Methods
  * @author Anna-Lee Thompson (@annaleethompson)
- * Date: April 2, 2023
+ * Date: April 3, 2023
  */
 
 /* This is a stub for the Cafe class */
@@ -57,6 +57,13 @@ public class Cafe extends Building {
         this.nCups += nCups;
     }
 
+    /**Overloaded Manipulator to restock only coffee.
+     * @param nCoffeeOunces the number of coffee ounces to be added to the current stock
+     */
+    private void restock(int nCoffeeOunces) {
+        this.nCoffeeOunces += nCoffeeOunces;
+    }
+
     /*Cafe Extention of the Building toString() method */
     public String toString() {
         String description = super.toString();
@@ -86,6 +93,9 @@ public class Cafe extends Building {
         System.out.println(myCafe.nCreams);
         System.out.println(myCafe.nCups);
         myCafe.showOptions();
-        myCafe.goToFloor(3);   
+        myCafe.goToFloor(3);  
+        myCafe.showOptions(); 
+        myCafe.goToFloor(5);
+        myCafe.restock(10);
     }   
 }

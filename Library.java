@@ -2,9 +2,10 @@
  * Filename: Library.java
  * Decription: Library class extended from Building with a hashtable attribute containing all the titles in the library's collection. Contains functions addTitle, removeTitle, checkOut, returnBook, containsTitle, isAvailable, and printCollection.
  * Overridden Methods: toString(), showOptions(), and goToFloor()
+ * Overloaded Methods: containsTitle(), and isAvailable()
  * A part of CSC 120-02: Object-Oriented Programming, Smith College Spring 2023, A7: Not Your Parents Methods
  * @author Anna-Lee Thompson (@annaleethompson)
- * Date: April 2, 2023
+ * Date: April 3, 2023
  */
 
 /**Imports Hashtable from the java.util package */
@@ -62,7 +63,7 @@ public class Library extends Building {
     if (!this.collection.containsKey(title)) {
       throw new RuntimeException("Sorry, "+title+ " is not a part of this library's collection");
     }
-    if (this.collection.containsValue(false)) {
+    if (this.collection.get(title)==false) {
       throw new RuntimeException(title + " is already checked out");
     }
     this.collection.replace(title, true, false);
@@ -104,6 +105,40 @@ public class Library extends Building {
     }
   }
 
+  /**Overloaded Acessor to determine if two books are in the collection at the same time using the containsKey function to search for presence/absence of titles.
+   * @param title title/author of the first book being searched for in the collection
+   * @param title2 title/author of the second book being searched for in the collection
+   * @return a boolean value for whether or not the title is in the collection 
+   */
+  public boolean containsTitle(String title, String title2) {
+    if (this.collection.size() == 0){
+      throw new RuntimeException("Sorry, there are no books in this library's collection");
+    }
+    if (this.collection.containsKey(title) == true) {
+      if (this.collection.containsKey(title2) == true) {
+        System.out.println(title+" and "+title2 +" are both in this collection!");
+        return true;
+      }
+      if (this.collection.containsKey(title2) == false) {
+        System.out.println(title+" is in this collection but "+title2 +" is not");
+        return false;
+      }
+    }
+    if (this.collection.containsKey(title) == false) {
+      if (this.collection.containsKey(title2) == false) {
+        System.out.println("Both "+title+" and "+title2+" are not in this collection");
+        return false;
+      }
+      if (this.collection.containsKey(title2) == true) {
+        System.out.println(title2+" is in this collection but "+title+" is not");
+        return false;
+      }
+      return false;
+    } else {
+      return false;
+    } 
+  }
+
   /**Accesor to determine if a book is available to be checked out using the get() function for a specific title withing the collection.
    * @param title the title/author that's availablility status is to be determined
    * @return a boolean value for if the book is available (true = available, false = unavailable)
@@ -121,6 +156,46 @@ public class Library extends Building {
     }
     else {
       System.out.println(title + " is not available :(");
+      return false;
+    } 
+  }
+
+  /**Overloaded Accesor to determine if two books are available at the same time to be checked out using the get() function for a specific title withing the collection.
+   * @param title the title/author of the first book that's availablility status is to be determined
+   * @param title2 the title/author of the second book that's availablility status is to be determined
+   * @return a boolean value for if the book is available (true = available, false = unavailable)
+   */
+  public boolean isAvailable(String title, String title2) {
+    if (this.collection.size() == 0){
+      throw new RuntimeException("Sorry, there are no books in this library's collection");
+    }
+    if (!this.collection.containsKey(title)) {
+      throw new RuntimeException("Sorry, "+title+ " is not a part of this library's collection");
+    }
+    if (!this.collection.containsKey(title2)) {
+      throw new RuntimeException("Sorry, "+title2+ " is not a part of this library's collection");
+    }
+    if (this.collection.get(title) == true) {
+      if (this.collection.get(title2) == true) {
+        System.out.println(title+" and "+title2 +" are both available!");
+        return true;
+      }
+      if (this.collection.get(title2) == false) {
+        System.out.println(title+" is available but "+title2 +" is unavailable");
+        return false;
+      }
+    }
+    if (this.collection.get(title) == false) {
+      if (this.collection.get(title2) == false) {
+        System.out.println("Both "+title+" and "+title2+" are unavailable");
+        return false;
+      }
+      if (this.collection.get(title2) == true) {
+        System.out.println(title2+" is available but "+title+" is unvailable");
+        return false;
+      }
+      return false;
+    } else {
       return false;
     } 
   }
@@ -196,12 +271,18 @@ public class Library extends Building {
     //myLibrary.addTitle("The Silmarillion");
     //myLibrary.printCollection();
     Library Tejegg  = new Library("Tejegg", "1 Bacon Way", 7, false);
-    Tejegg.addTitle("Twilight"); 
-    Tejegg.addTitle("The Hunger Games"); 
+    //Tejegg.addTitle("Twilight"); 
+    //Tejegg.addTitle("The Hunger Games");
+    Tejegg.addTitle("The Hobbit");
     System.out.println(Tejegg.toString());
     Tejegg.printCollection();
     Tejegg.showOptions();
     Tejegg.enter();
     Tejegg.goToFloor(2);
+    //Tejegg.checkOut("The Hunger Games");
+    Tejegg.printCollection();
+    //Tejegg.checkOut("Twilight");
+    //Tejegg.isAvailable("Twilight", "The Hunger Games");
+    Tejegg.containsTitle("Twilight", "The Hunger Games");
   }
 }

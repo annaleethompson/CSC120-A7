@@ -2,9 +2,10 @@
  * Filename: House.java
  * Decription: House class extended from Building with attributes hasDiningRoom (boolean), an array list containing all residents, and a boolean for whether there is an elevator. Contains functions hasDiningRoom(), nResidents(), moveOut(), moveIn(), and isResident().
  * Overriden Methods: toString(), showOptions(), and goToFloor()
+ * Overloaded Methods: Conctructor (no name), and isResident()
  * A part of CSC 120-02: Object-Oriented Programming, Smith College Spring 2023, A7: Not Your Parents Methods
  * @author Anna-Lee Thompson (@annaleethompson)
- * Date: April 2, 2023
+ * Date: April 3, 2023
  */
 
 /**Imports ArrayList from the java.util package */
@@ -19,8 +20,8 @@ public class House extends Building{
   Boolean elevator;
   
   /**Constructor */
-  public House(String name, String address, int nFloors, boolean hasDiningRoom, boolean elevator) {
-    super(name, address, nFloors);
+  public House(String address, int nFloors, boolean hasDiningRoom, boolean elevator) {
+    super(address, nFloors);
     this.residents = new ArrayList<>();
     this.hasDiningRoom = hasDiningRoom;
     this.elevator = elevator;
@@ -86,6 +87,40 @@ public class House extends Building{
     }
   }
 
+  /**Overloaded Accessor for whether or not two people are residents of the house
+   * @param person first person to be determined if they are a resident of the house
+   * @param person2 second person to be determined if they are a resident of the house
+   * @return boolean describing if each person is a resident (true = resident, false = not a resident)
+   */
+  public boolean isResident(String person, String person2) {
+    if (this.residents.size() == 0){
+      throw new RuntimeException("Sorry, there are no residents in this house");
+    }
+    if (this.residents.contains(person) == true) {
+      if (this.residents.contains(person2) == true) {
+        System.out.println(person+" and "+person2 +" are both residents of this house!");
+        return true;
+      }
+      if (this.residents.contains(person2) == false) {
+        System.out.println(person+" is a resident but "+person2 +" is not");
+        return false;
+      }
+    }
+    if (this.residents.contains(person) == false) {
+      if (this.residents.contains(person2) == false) {
+        System.out.println("Both "+person+" and "+person2+" are not residents of this house");
+        return false;
+      }
+      if (this.residents.contains(person2) == true) {
+        System.out.println(person2+" is a resident but "+person+" is not");
+        return false;
+      }
+      return false;
+    } else {
+      return false;
+    } 
+  }
+
    /*House Extention of the Building toString() method */
   public String toString() {
     String description = super.toString();
@@ -137,21 +172,20 @@ public class House extends Building{
   }
 
   public static void main(String[] args) {
-    House myHouse = new House("Egg", "1 Chapin Way", 4, true, false);
+    House myHouse = new House("1 Chapin Way", 4, true, false);
     System.out.println(myHouse.toString());
     myHouse.moveIn("Yoke");
     System.out.println(myHouse.toString());
-    House Tejegg  = new House("Tejegg", "1 Bacon Way", 7, true, false);
-    Tejegg.moveIn("Tejas");
-    //myHouse.moveIn("Yoke");
+    House Tejegg  = new House("1 Bacon Way", 7, true, false);
+    //Tejegg.moveIn("Tejas");
+    Tejegg.moveIn("Yoke");
     //myHouse.moveOut("Yoke");
     //myHouse.moveOut("Y");
     //myHouse.isResident("Yoke");
     //myHouse.isResident("Y");
     Tejegg.showOptions();
     Tejegg.enter();
-    Tejegg.goToFloor(2);
-    Tejegg.goToFloor(3);
-    Tejegg.goToFloor(2);
+    //Tejegg.goToFloor(2);
+    Tejegg.isResident("Yoke", "Tejas");
   }
 }
